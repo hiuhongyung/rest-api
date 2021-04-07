@@ -4,13 +4,18 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 require("dotenv/config");
+const dotenv = require("dotenv");
 
+dotenv.config();
 
 app.use(bodyParser.json());
 
-//Import Routes 
-const postsRoute = require('./routes/posts');
+//Import Routes
+const postsRoute = require("./routes/posts");
 app.use("/posts", postsRoute);
+
+const authRoute = require("./routes/auth");
+app.use("/api/user", authRoute);
 
 //Middlewares
 //a function will execute when we hit the routes  -> even authentication
@@ -19,12 +24,12 @@ app.use("/posts", () => {
   console.log("This middleware function is running");
 });
 
+app.use(express.json());
+
 //Routes (get, post , patch, delete )
 app.get("/", (req, res) => {
   res.send("Lets build a REST api");
 });
-
-
 
 //Connect to DB
 mongoose.connect(
